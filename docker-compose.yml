@@ -1,0 +1,30 @@
+version: "3"
+services:
+    app:
+        build: ./docker-config/php
+        depends_on:
+            - mysql
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - .:/var/www/html
+            - ./docker-config/php/sites:/etc/apache2/sites-enabled
+            - ./docker-config/php/ssl:/etc/ssl/certs/local
+
+    mysql:
+        image: mysql:8.0
+        environment:
+            MYSQL_DATABASE: laravel_umarche
+            MYSQL_USER: umarche
+            MYSQL_PASSWORD: password123
+            MYSQL_ROOT_PASSWORD: root
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./docker-config/mysql:/etc/mysql/conf.d
+            - mysql8-data:/var/lib/mysql
+
+
+volumes:
+    mysql8-data:
